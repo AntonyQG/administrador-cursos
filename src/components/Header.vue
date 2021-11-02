@@ -4,24 +4,26 @@
     <v-navigation-drawer v-model="drawer" absolute temporary>
       <v-list nav dense>
         <v-list-item class="px-2">
-          <v-img
-            src="../assets/GLI.png"
-            style="
-               {
-                border: none;
-                margin: 0;
-                padding: 0;
-                max-width: 100%;
-                height: auto;
-              }
-            "
-          ></v-img>
+          <router-link to="/">
+            <v-img
+              src="../assets/GLI.png"
+              style="
+                 {
+                  border: none;
+                  margin: 0;
+                  padding: 0;
+                  max-width: 35%;
+                  height: auto;
+                }
+              "
+            ></v-img>
+          </router-link>
         </v-list-item>
         <v-list-item-group
           v-model="group"
           active-class="deep-purple--text text--accent-4"
         >
-          <v-list-item v-for="item in items" :key="item.title">
+          <v-list-item v-for="item in items" :key="item.title" :to="item.path">
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
@@ -100,18 +102,28 @@
         <v-icon>mdi-logout</v-icon>
       </v-btn>
     </v-app-bar>
+    <router-view></router-view>
   </v-app>
 </template>
 
 <script>
+import { useRouter, useRoute } from "vue-router";
 export default {
+  setup() {
+    const router = useRouter();
+    const route = useRoute();
+  },
   data() {
     return {
+      pathHome: "/",
       drawer: false,
       group: null,
       items: [
-        { title: "Administradores", icon: "mdi-shield-account" },
-        { title: "Administradores ", icon: "mdi-briefcase-account" },
+        {
+          title: "Administradores",
+          icon: "mdi-briefcase-account",
+          path: "/administradores",
+        },
         { title: "Catálogos", icon: "mdi-notebook" },
         { title: "Líderes", icon: "mdi-account-group" },
         { title: "Usuarios", icon: "mdi-account-multiple" },
@@ -124,6 +136,7 @@ export default {
       ],
     };
   },
+  methods: {},
   watch: {
     group() {
       this.drawer = false;

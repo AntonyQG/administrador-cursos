@@ -55,9 +55,9 @@
         <v-icon color="red accent-4" class="mr-2" @click="deleteItem(item)">
           mdi-trash-can-outline
         </v-icon>
-        <v-icon class="mr-2" @click="deleteItem(item)">
-          mdi-eye-outline
-        </v-icon>
+        <router-link to="/perfil">
+          <v-icon class="mr-2" @click="seeAdmin()"> mdi-eye-outline </v-icon>
+        </router-link>
       </template>
       <template v-slot:no-data>
         <v-btn color="primary" @click="initialize"> Reset </v-btn>
@@ -109,6 +109,9 @@ export default {
   admins: "Administrators",
   data() {
     return {
+      users: "",
+      nombreUsusario: "",
+      correo: "",
       search: "",
       selected: [],
       loader: null,
@@ -137,79 +140,91 @@ export default {
       ],
       administradores: [
         {
-          admins: "Frozen Yogurt",
+          admins: "Eva Chavez",
           area: "Recursos Humanos",
           email: "correo@gmail.com",
           estatus: "Activo",
-          detalles: 4.0,
+          detalles: "",
         },
         {
-          admins: "Ice cream sandwich",
+          admins: "Theo French",
           area: "Recursos Humanos",
           email: "correo@gmail.com",
           estatus: "Inactivo",
-          detalles: 4.3,
+          detalles: "",
         },
         {
-          admins: "Eclair",
+          admins: "Luis Nogueira",
           area: "Recursos Humanos",
           email: "correo@gmail.com",
           estatus: "Activo",
-          detalles: 6.0,
+          detalles: "",
         },
         {
-          admins: "Cupcake",
+          admins: "Leonídio Gomes",
           area: "Recursos Humanos",
           email: "correo@gmail.com",
           estatus: "Activo",
-          detalles: 4.3,
+          detalles: "",
         },
         {
-          admins: "Gingerbread",
+          admins: "Raul Horton",
           area: "Recursos Humanos",
           email: "correo@gmail.com",
           estatus: "Activo",
-          detalles: 3.9,
+          detalles: "",
         },
         {
-          admins: "Jelly bean",
+          admins: "Kathryn Korkmaz",
           area: "Recursos Humanos",
           email: "correo@gmail.com",
           estatus: "Activo",
-          detalles: 0.0,
+          detalles: "",
         },
         {
-          admins: "Lollipop",
+          admins: "Adam Olsen",
           area: "Recursos Humanos",
           email: "correo@gmail.com",
           estatus: "Activo",
-          detalles: 0,
+          detalles: "",
         },
         {
-          admins: "Honeycomb",
+          admins: "Roxane Bertrand",
           area: "Recursos Humanos",
           email: "correo@gmail.com",
           estatus: "Inactivo",
-          detalles: 6.5,
+          detalles: "",
         },
         {
-          admins: "Donut",
+          admins: "Ema Holst",
           area: "Recursos Humanos",
           email: "correo@gmail.com",
           estatus: "Activo",
-          detalles: 4.9,
+          detalles: "",
         },
         {
-          admins: "KitKat",
+          admins: "Asuncion Rubio",
           area: "Recursos Humanos",
           email: "correo@gmail.com",
           estatus: "Activo",
-          detalles: 7,
+          detalles: "",
         },
       ],
     };
   },
   methods: {
+    async fetchUsers() {
+      const res = await fetch("https://randomuser.me/api/?results=10");
+      const data = await res.json();
+      return data;
+    },
+    getDataUsers(usersData) {
+      for (let i = 0; i < usersData.length; i++) {
+        const singleUser = usersData[i];
+        console.log("Name: ", singleUser.name.first);
+        console.log("Last", singleUser.name.last);
+      }
+    },
     getColor(estatus) {
       if (estatus == "Activo") return "green";
       else return "red";
@@ -259,6 +274,16 @@ export default {
 
       this.loader = null;
     },
+  },
+  async created() {
+    const data = await this.fetchUsers();
+    this.users = data.results;
+    this.getDataUsers(this.users);
+    // console.log("Data of users: ", this.users);
+    // this.nombreUsusario = this.users[0].name.first;
+    // console.log("Name of user: ", this.nombreUsusario);
+    // this.correo = this.users[0].email;
+    // console.log("Email of user: ", this.correo);
   },
 };
 </script>
